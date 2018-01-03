@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd  
+                        http://www.springframework.org/schema/mvc  
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	
+	<!-- 使springMVC注解生效 -->
+	<mvc:annotation-driven	conversion-service="conversion-service"/>
+	
+	<!-- 扫描controal,使得@Controller注解生效 -->
+	<context:component-scan base-package="com.quanhu.*.controller"/>
+	
+	<!-- 视图解析器 -->
+	<bean	id="internalResourceViewResolver"	class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix"	value="/"/>
+		<property name="suffix"	value=".jsp"/>
+	</bean>
+	
+	<!-- 自定义日期类型转换器 -->
+	<bean	id="dateConverter"	class="com.quanhu.chens.entity.DateConverter"/>
+	
+	<!-- 注入conversion-service -->
+	<bean	id="conversion-service"	class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<ref	local="dateConverter"/>
+			</set>
+		</property>
+	</bean>
+
+</beans>
